@@ -37,7 +37,7 @@ $no = 1;
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Status</h6>
                                     </th>
-                                    <th class="border-bottom-0">
+                                    <th class="border-bottom-0" width="15%">
                                         <h6 class="fw-semibold mb-0">Aksi</h6>
                                     </th>
                                 </tr>
@@ -54,7 +54,7 @@ $no = 1;
                                         <td class="border-bottom-0">
                                             <p class="mb-0 fw-normal text-center"><?= $data['stok']; ?> </p>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        <td class="border-bottom-0 text-center">
                                             <?php if ($data['stok'] > 50) { ?>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <span class="badge bg-success rounded-3 fw-semibold">Banyak</span>
@@ -71,6 +71,7 @@ $no = 1;
                                         </td>
                                         <td class="border-bottom-0">
                                             <a href="proses-delete.php?bahan=<?= $data['id_bahan']; ?>" class="btn btn-danger">Delete</a>
+                                            <a href="bahan-edit.php?id_bahan=<?= $data['id_bahan']; ?>" class="btn btn-warning mx-3">Edit</a>
                                         </td>
                                     </tr>
                                 <?php $no++;

@@ -56,3 +56,20 @@ if (isset($_POST['bahan-keluar-tambah'])) {
     echo "<script>alert('Berhasil mengurangi stok bahan');</script>";
     echo "<script>window.location.href = 'bahan-keluar.php';</script>";
 }
+
+if (isset($_POST['bahan-edit'])) {
+    $nama = $_POST['nama'];
+    $stok = $_POST['stok'];
+    $id_bahan = $_POST['id_bahan'];
+
+    $q = "UPDATE `bahan` 
+    SET `nama` = '$nama', 
+    `stok` = '$stok' 
+    WHERE `bahan`.`id_bahan` = '$id_bahan';";
+    $do_q = mysqli_query($conn, $q);
+
+
+    // arahkan ke halaman lain
+    echo "<script>alert('Berhasil mengedit bahan');</script>";
+    echo "<script>window.location.href = 'bahan.php';</script>";
+}

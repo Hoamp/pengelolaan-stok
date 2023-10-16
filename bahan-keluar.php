@@ -1,12 +1,32 @@
 <?php
 require_once './config/db.php';
-$query_all = "SELECT * FROM bahan_keluar INNER JOIN bahan ON bahan.id_bahan = bahan_keluar.id_bahan ";
-$data_bahan = mysqli_query($conn, $query_all);
 $no = 1;
 
 $qNamaBahan = "SELECT nama,id_bahan,stok FROM bahan";
 $nama_bahan = mysqli_query($conn, $qNamaBahan);
 
+if (isset($_POST['tampil'])) {
+    $dari = mysqli_real_escape_string($conn, $_POST['dari']);
+    $sampai = mysqli_real_escape_string($conn, $_POST['sampai']);
+
+    $dari_array = explode('-', $dari);
+    $dari_dd = $dari_array[2];
+    $dari_mm = $dari_array[1];
+    $dari_yy = $dari_array[0];
+    $dari = "$dari_dd-$dari_mm-$dari_yy";
+
+    $sampai_array = explode('-', $sampai);
+    $sampai_dd = $sampai_array[2];
+    $sampai_mm = $sampai_array[1];
+    $sampai_yy = $sampai_array[0];
+    $sampai = "$sampai_dd-$sampai_mm-$sampai_yy";
+
+
+    $data_bahan = mysqli_query($conn, "SELECT * FROM bahan_keluar INNER JOIN bahan ON bahan.id_bahan = bahan_keluar.id_bahan WHERE waktu >= '$dari' AND waktu <= '$sampai'");
+} else {
+    $query_all = "SELECT * FROM bahan_keluar INNER JOIN bahan ON bahan.id_bahan = bahan_keluar.id_bahan ";
+    $data_bahan = mysqli_query($conn, $query_all);
+}
 
 ?>
 
@@ -60,13 +80,39 @@ $nama_bahan = mysqli_query($conn, $qNamaBahan);
                                             <p class="mb-0 fw-normal"><?= $data['waktu']; ?></p>
                                         </td>
                                         <td class="border-bottom-0">
-
+                                            <a href="proses-delete.php?bahan_keluar=<?= $data['id_bahan_keluar']; ?>" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 <?php $no++;
                                 endforeach; ?>
                             </tbody>
                         </table>
+                        <div class="mt-5">
+                            <h4>Pencarian</h4>
+                            <form action="" method="POST">
+                                <div class="my-2 col-md-3">
+                                    <input name="dari" onfocus="(this.type ='date')" class="form-control" placeholder="Masukan Tanggal Awal" required>
+                                </div>
+                                <div class="my-2 col-md-3">
+                                    <input name="sampai" onfocus="(this.type ='date')" class="form-control" placeholder="Masukan Tanggal Akhir" required>
+                                </div>
+                                <div class="my-2">
+                                    <button class="btn btn-primary" type="submit" name="tampil">
+                                        Tampilkan
+                                    </button>
+                                </div>
+                            </form>
+                            <form action="excel-bahan-keluar.php" method="post">
+                                <input type="hidden" name="dari" value="<?= $dari; ?>">
+                                <input type="hidden" name="sampai" value="<?= $sampai; ?>">
+
+                                <div class="col-lg-3 mt-3">
+                                    <button class="btn btn-success" type="submit">
+                                        Export Excel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
